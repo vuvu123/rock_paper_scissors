@@ -39,6 +39,7 @@ function game() {
         let result = playRound(playerChoice, compChoice);
         console.log(result);
         if (result.includes("Tie")) {
+          console.log(`Current Score: ${playerScore}-${compScore}`)
           continue;
         } else if (result.includes("Win")) {
           playerScore++;
