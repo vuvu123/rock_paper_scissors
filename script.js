@@ -33,7 +33,7 @@ function game() {
     compScore = 0;
 
     for (i = 0; i < 5; i++) {
-        const playerChoice = prompt("Please select rock/paper/scissors").toLocaleLowerCase();
+        const playerChoice = prompt("Please select rock/paper/scissors").toLowerCase();
         const compChoice = computerPlay();
 
         let result = playRound(playerChoice, compChoice);
