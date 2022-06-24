@@ -28,27 +28,57 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
+function disableButtons() {
+    CHOICES.forEach(button => document.getElementById(button).disabled = true);
+}
+
+function enableButtons() {
+    CHOICES.forEach(button => document.getElementById(button).disabled = false);
+}
+
 function game() {
     playerScore = 0;
     compScore = 0;
 
-    for (i = 0; i < 5; i++) {
-        const playerChoice = prompt("Please select rock/paper/scissors").toLowerCase();
+    const container = document.querySelector('#container');
+    const resultText = document.createElement('p');
+    const score = document.createElement('p');
+    const winner = document.createElement('p');
+
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const playerChoice = button.id;
         const compChoice = computerPlay();
 
         let result = playRound(playerChoice, compChoice);
-        console.log(result);
-        if (result.includes("Tie")) {
-          console.log(`Current Score: ${playerScore}-${compScore}`)
-          continue;
+        resultText.textContent = result;
+
+        if (result.includes('Tie')) {
+          // Do nothing
         } else if (result.includes("Win")) {
           playerScore++;
         } else {
           compScore++;
         }
-        console.log(`Current Score: ${playerScore}-${compScore}`)
-    }
+        score.textContent = `Score: ${playerScore}-${compScore}`;
 
+        if (playerScore == 5) {
+          winner.textContent = 'You won the game!';
+          disableButtons();
+        }
+        if (compScore == 5) {
+          winner.textContent = 'Computer won the game!';
+          disableButtons();
+        }
+
+        winner.setAttribute('style', 'color: red; font-size: 20px; font-weight: 600');
+
+        container.appendChild(resultText);
+        container.appendChild(score);
+        container.appendChild(winner);
+      });
+    });
 }
 
 game()
