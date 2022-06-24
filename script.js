@@ -1,4 +1,15 @@
 const CHOICES = ["rock", "paper", "scissors"];
+let playerScore = 0;
+let compScore = 0;
+let isGameOver = false;
+
+const container = document.querySelector('#container');
+const resultText = document.createElement('p');
+const score = document.createElement('p');
+const winner = document.createElement('p');
+const playAgainBtn = document.createElement('button');
+playAgainBtn.textContent = 'Play Again';
+playAgainBtn.hidden = true;
 
 function computerPlay() {
     return CHOICES[Math.floor(Math.random() * CHOICES.length)]
@@ -36,16 +47,24 @@ function enableButtons() {
     CHOICES.forEach(button => document.getElementById(button).disabled = false);
 }
 
-function game() {
+function playAgain() {
+  playAgainBtn.hidden = false;
+  playAgainBtn.addEventListener('click', () => {
+    enableButtons();
     playerScore = 0;
     compScore = 0;
+    resultText.textContent = '';
+    score.textContent = '';
+    winner.textContent = '';
+    isGameOver = false;
+    playAgainBtn.hidden = true;
+  });
 
-    const container = document.querySelector('#container');
-    const resultText = document.createElement('p');
-    const score = document.createElement('p');
-    const winner = document.createElement('p');
+}
 
+function game() {
     const buttons = document.querySelectorAll('button');
+
     buttons.forEach((button) => {
       button.addEventListener('click', () => {
         const playerChoice = button.id;
@@ -66,10 +85,13 @@ function game() {
         if (playerScore == 5) {
           winner.textContent = 'You won the game!';
           disableButtons();
+          isGameOver = true;
         }
+      
         if (compScore == 5) {
           winner.textContent = 'Computer won the game!';
           disableButtons();
+          isGameOver = true;
         }
 
         winner.setAttribute('style', 'color: red; font-size: 20px; font-weight: 600');
@@ -77,8 +99,14 @@ function game() {
         container.appendChild(resultText);
         container.appendChild(score);
         container.appendChild(winner);
+
+        if (isGameOver) {
+          playAgain();
+        }
       });
     });
+
+    container.appendChild(playAgainBtn);
 }
 
 game()
